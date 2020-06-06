@@ -1,0 +1,37 @@
+{% extends 'Front_End_base.html' %}
+
+{% block title %} Music {% endblock %}
+
+{% block background-image %}
+    {% load static %}
+    <div class="container-fluid text-elegant content-justify-center " 
+        style="background-image: url('{% static 'Front_End/kyle_Image_3.jpeg' %}'); background-repeat:no-repeat; background-position:center; background-size:contain;"> 
+{% endblock %}
+
+{% block main-content %}
+<div class="overflow-auto">
+    {% if request.session.status %}
+        {% for album, album_details in request.session.all_music.items %}
+            <div class="row h-50">
+                <div class="justify-content-center row music-row" >
+                    <div class="col col-7 col-xs-7 col-s-7 col-md-6 col-lg-6 col-xl-5 ">
+                        <img src="{{ album_details.album_image }}" alt="Album Art" class="img-responsive img-thumbnail w-100 h-auto" /><br />
+                    </div>
+                    <div class="col col-5 col-xs-5 col-s-5 col-md-5 col-lg-4 col-xl-3 text-secondary">
+                        {{ album_details.album_name }} <br />
+                        {% for song in album_details.album_songs %}
+                            &nbsp;&nbsp;{{ song.song_name }} <br />
+                        {% endfor %}
+                    </div> 
+                </div>
+            </div>
+            <div class="spacer">
+            </div>
+        {% endfor %}
+    {% else %}
+        {% if request.session.errors %}
+            {{ request.session.errors }} <br />
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

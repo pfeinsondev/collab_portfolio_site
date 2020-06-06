@@ -1,0 +1,31 @@
+{% extends 'music_base.html' %}
+
+{% block title %} Add A Song {% endblock %}
+
+{% block main-content %}
+    {% if request.session.errors %}
+        {% for error in request.session.errors %}
+            {{ error }}
+        {% endfor %}
+    {% endif %}
+    <form action="process_song_data" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="song_name" class="col-2 col-form-label">Song Name:</label>
+            <input type="text" class="col-10 form-control" id="song_name" placeholder="Enter Song Name" name="song_name" />
+        </div>
+        <div class="form-group">
+            <label for="album_name" class="col-2 col-select-label">Album:</spam>
+            {% if request.session.albums %}
+                <select class="form-control" id="album_name" name="album_name">
+                    {% for album in request.session.albums %}
+                        <option value="{{ album }}">{{ album }}</option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" value="Add Song" />Add Song</button>
+        </div>
+    </form>
+{% endblock %}

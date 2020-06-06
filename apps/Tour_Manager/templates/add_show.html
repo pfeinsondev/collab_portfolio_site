@@ -1,0 +1,43 @@
+{% extends 'tour_base.html' %}
+
+{% block title %}Add A Show{% endblock %}
+
+{% block main-content %}
+    {% if not request.session.status %}
+        {% for error in request.session.errors %}
+            {{ error }}
+        {% endfor %}
+    {% endif %}
+        <form action='create_new_show' method='post'>
+        {% csrf_token %}
+            <div class="form-group">
+                <label for="show_city" class="col-form-label">Show City: </label>
+                <input class="form-control" type='text' name="show_city" />
+            </div>
+            <div class="form-group">
+                <label for="show_state" class="col-form-label">Show State:</label>
+                <input class="form-control" type="text" name="show_state" />
+            </div>
+            <div class="form-group">
+                <label class="field_label">Tour This Show Belongs To:</label>
+                {% if request.session.tours %}
+                    <select class="form-control" id="tour_name" name="tour_name" >
+                        {% for tour in request.session.tours %}
+                            <option value="{{ tour }}">{{ tour }}</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="show_time" class="col-form-label">Show Time:</label>
+                <input class="form-control" type="time" name="show_time" >
+            </div>
+            <div class="form-group">
+                <label for="show_date" class="field_label">Show Date:</label>
+                <input class="form-control" type="date" name="show_date" />
+            </div><br />
+            <div class="form-group"> 
+                <button class="btn btn-primary" type="submit" value="Add Show">Add Show</button>
+            </div>    
+        </form>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Admin/About Me{% endblock %}
+
+{% block main-content %}
+    {% if request.session.status %}
+        <div class="row h-75">
+            <div class="col-6">
+                <img src="{{ request.session.about_me_image }}" class="img-responsive w-100 h-auto"  />
+            </div>
+            <div class="col-6">
+                {{ request.session.about_me_text }}
+            </div>
+        </div>
+    
+    {% else %}
+        {{ request.session.errors }}
+    {% endif %}
+{% endblock %}

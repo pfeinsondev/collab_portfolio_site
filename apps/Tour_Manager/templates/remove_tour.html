@@ -1,0 +1,27 @@
+{% extends 'tour_base.html' %}
+
+{% block title %}Admin/Remove A Tour{% endblock %}
+
+{% block main-content %}
+    {% if request.session.errors %}
+        {% for error in request.session.errors %}
+            {{ error }}
+        {% endfor %}
+    {% endif %} 
+    {% if request.session.tours %}
+        <form action="remove_tour" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="tour_name" class="col-2 col-select-label">Select Tour To Delete</label>
+                <select class="form-control" id="tour_name" name="tour_name" >
+                    {% for tour in request.session.tours %}
+                        <option value="{{ tour }}">{{ tour }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit" value="Remove Selected Tour">Remove Selected Tour</button>
+            </div>
+        </form>
+    {% endif %}
+{% endblock %}

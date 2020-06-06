@@ -1,0 +1,32 @@
+{% extends 'newsfeed_base.html' %}
+
+{% block main-content %}
+    <div class="overflow-auto h-100 w-100" style="text-align:center;">
+        {% if request.session.status %}
+            {% if request.session.entries_list_json %}
+                {% for entries_json in request.session.entries_list_json %}
+                    <div class="row h-auto">
+                        <div class="col-12">   
+                            <div class="row h-auto">
+                                <div class="col-12 h-auto" >  
+                                    <img src="{{ entries_json.post_media }}" Alt="Post Image" class="img-responsive w-auto h-auto" />
+                                </div>
+                            </div>
+                            <div class="row" style="height:5%">
+                                <div class="col-12">
+                                    posted at {{ entries_json.post_time }} on {{ entries_json.post_date }}<br />
+                                    (Admin Only View!) {{ entries_json.post_id }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% else %}
+            {% if request.session.errors %}
+                {{ request.session.errors }}<br />
+            {% endif %}
+        {% endif %}
+        
+{% endblock %}

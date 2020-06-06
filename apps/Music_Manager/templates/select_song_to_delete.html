@@ -1,0 +1,28 @@
+{% extends 'music_base.html' %}
+
+{% block title %}Delete A Song{% endblock %}
+
+{% block main-content %}
+    {% if request.session.errors %}
+        {% for error in request.session.errors %}
+            {{ error }}
+        {% endfor %}
+    {% endif %}
+    {% if request.session.songs %}
+        <form action="delete_song" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="song_name_to_delete" class="w-auto col-select-label">Song Name:</label>
+                <select class="form-control" id="song_name_to_delete" name="song_name_to_delete" >
+                    {% for song in request.session.songs %}
+                        <option value="{{ song.song_name }}">{{ song.song_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" value="Remove Selected Song" />Delete Song</button>
+        </form>
+    {% else %}
+        <h1>No Songs Found! Have you added any?</h1> <br />
+        <a href="{% url 'get_new_song_data' %}">Add a tour</a> <br />
+    {% endif %}
+{% endblock %}

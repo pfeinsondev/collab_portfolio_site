@@ -1,0 +1,21 @@
+{% extends 'tour_base.html' %}
+
+{% block title %}Add A Tour{% endblock %}
+
+{% block main-content %}
+    {% if not request.session.status %}
+        {% for error in request.session.errors %}
+            {{ error }}
+        {% endfor %}
+    {% endif %}
+    <form action="create_new_tour" method="post">
+        {% csrf_token %}
+        <div class="form-group-row">
+            <label for="tour_name" class="col-form-label">Tour Name:</label>
+            <input type="text" class="form-control" name="tour_name" />
+        </div><br />
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit" value="Add Tour" >Add A Tour</button>
+        </div>
+    </form>
+{% endblock %}

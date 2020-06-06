@@ -1,0 +1,20 @@
+{% extends 'Front_End_base.html' %}
+
+{% block title %}About Me{% endblock %}
+
+{% block background-image %}
+    {% load static %}
+    <div class="container-fluid text-elegant content-justify-center " 
+        style="background-image: url('{% static 'Front_End/Kyle_Image_1.jpeg' %}'); background-repeat:no-repeat; background-position:center"> 
+{% endblock %}
+
+{% block main-content %}
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ request.session.about_me_image }}" class="img-responsive w-100 h-auto" />
+        </div>
+        <div class="col-md-6">
+            <p>{{request.session.about_me_text}}</p>
+        </div>
+    </div>
+{% endblock %}

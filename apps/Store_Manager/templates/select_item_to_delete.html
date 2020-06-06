@@ -1,0 +1,27 @@
+{% extends 'store_base.html' %}
+
+{% block title %}Delete Item{% endblock %}
+
+{% block main-content %}
+    <!-- Success Path -->
+    {% if request.session.status %}
+    <form action='delete_item' method='post'>
+        {% csrf_token %}
+        <div class="form-group">
+        
+            <label for="item_name_to_delete" class="form-select-label">Item To Delete:</label>
+            <select class="form-control" id='item_name_to_delete' name='item_name_to_delete'>
+            {% for item in request.session.all_item_names %}
+                <option value="{{ item }}">{{ item }}</option> 
+            {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="Submit" value="Delete Item">Delete Selected Item</button>
+    </form>
+    
+    <!-- Error path -->
+    {% else %}
+        <h1> {{ request.session.errors }} </h1>
+    {% endif %}
+{% endblock %}

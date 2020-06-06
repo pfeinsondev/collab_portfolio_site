@@ -1,0 +1,27 @@
+{% extends 'tour_base.html' %}
+
+{% block title %}All Tours{% endblock %}
+
+{% block main-content %}
+    {% if request.session.status %}
+        {% for tour, shows in request.session.tours.items %}
+            <div class="row h-auto w-100 " style="text-align:center;">
+                <div class="col">
+                    <Strong>{{ tour }}</strong>
+                </div>
+            </div>
+                    {% for individual_show, individual_show_info in shows.items %}
+                        <div class="row h-auto w-100">
+                            <div class="col w-50" style="text-align:center;">
+                                {{ individual_show_info.show_city }}, 
+                                {{ individual_show_info.show_state }} <br />
+                                {{ individual_show_info.show_time }}
+                                {{ individual_show_info.show_date }} <br />
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

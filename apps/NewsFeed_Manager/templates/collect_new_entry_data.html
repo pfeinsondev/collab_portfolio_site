@@ -1,0 +1,20 @@
+{% extends 'newsfeed_base.html' %}
+
+{% block main-content %}
+        {% if not request.session.status %}
+            {% for error in request.session.errors %}
+                {{ error }}
+            {% endfor %}
+        {% endif %}
+        <form action="process_new_entry_data" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" name="post_media" id="post_media">
+                <label for="post_media" class="custom-file-label">Media Attachment</label>
+                
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit" value="Post" >Add Post</button>
+            </div>
+        </form>
+{% endblock %}

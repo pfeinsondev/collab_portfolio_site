@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Universal Imports -->
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
+        <meta charset="utf-8">
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'Front_End/styles.css' %}" />
+        <!-- Social Media Icon library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <!-- Popper JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <title>{% block title %}Web Site Home Page{% endblock %}</title>
+    </head>
+    <body>
+        {% load static %}
+        <!-- whole window -->
+        {% block background-image %}
+            <div class="container-fluid text-elegant content-justify-center " 
+            style="background-image: url('{% static 'Front_End/Kyle_Image_3.jpeg' %}'); background-repeat:no-repeat; background-position:center">  
+        {% endblock %}
+            <div class="container" >  <!-- web-page -->
+                <div class="row justify-content-between h-auto"> <!-- Navbar -->
+                        <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#main-navigation" aria-controls="main-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <nav class="navbar navbar-expand-lg collapse navbar-collapse justify-content-center"  id="main-navigation">
+                        <ul class="navbar-nav"> 
+                            <div class="col w-auto"> <!-- Home page -->
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="{% url 'home_page' %}" aria-disabled="true">Home</a>
+                                </li>
+                            </div>
+                            <div class="col w-auto"> <!-- Music -->
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="{% url 'music_page' %}" aria-disabled="false">Music</a>
+                                </li>
+                            </div>
+                            <div class="col w-auto"> <!-- Tours -->
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="{% url 'tours_page' %}" aria-disabled="false">Tours</a>
+                                </li>
+                            </div>
+                            <div class="col w-auto"> <!-- contact -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'contact_page' %}" aria-disabled="false">Contact</a>
+                                </li>
+                            </div>
+                            <div class="col w-auto"> <!-- Store -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'store_page' %}" aria-disabled="false">Store</a>
+                                </li>
+                            </div>
+                            <div class="col w-auto"> <!-- Contact -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'contact_page' %}" aria-disabled="false">Contact</a>
+                                </li>
+                            </div>
+                            <div class="col w-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'about_page' %}" aria-disabled="false">About</a>
+                                </li>
+                            </div>
+                        </ul> <!-- navbar-nav -->
+                    </nav> <!-- main-navigation --> 
+
+                </div> <!-- end navbar -->
+                <main class="row justify-content-center text-secondary" style="height:85%;" id="main-content" > <!-- body -->
+                <br /><br/>
+                {% block main-content %}
+
+                {% endblock %}
+                </main> <!-- end body -->
+                <div class="row justify-content-center" style="height:10%"> <!-- footer -->
+                    <!-- Add font awesome icons -->
+                    <div class="col-1 col-xs-1 col-s-1 col-md-1 col-lg-1 col-xl-1"><!--col-md-6 col-lg-4 col-xl-3-->
+                        <a href="#" class="fa fa-facebook"></a>
+                    </div>
+                    <div class="col-1 col-xs-1 col-s-1 col-md-1 col-lg-1 col-xl-1">
+                        <a href="#" class="fa fa-twitter"></a>
+                    </div>
+                    <div class="col-1 col-xs-1 col-s-1 col-md-1 col-lg-1 col-xl-1">
+                        <a href="#" class="fa fa-instagram"></a>
+                    </div>
+                    <div class="col-1 col-xs-1 col-s-1 col-md-1 col-lg-1 col-xl-1">
+                        <a href="#" class="fa fa-bandcamp"></a>
+                    </div>
+                    <div class="col-1 col-xs-1 col-s-1 col-md-1 col-lg-1 col-xl-1">
+                        <a href="#" class="fa fa-spotify"></a>
+                    </div>
+                </div>  <!-- end footer -->
+            </div> <!-- End web-page -->
+        </div> <!-- End whole window -->
+    </body>
+</html>

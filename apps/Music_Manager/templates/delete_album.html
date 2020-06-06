@@ -1,0 +1,29 @@
+{% extends 'music_base.html' %}
+
+{% block title %}Delete An Album{% endblock %}
+
+{% block main-content %}
+    {% if request.session.errors %}
+        {% for error in request.session.errors %}
+            {{ error }}
+        {% endfor %}
+    {% endif %}
+    {% if request.session.albums %}
+        <form action="delete_album" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="album_name" class="w-auto col-select-label">Album Name:</label>
+                <select class="form-control" id="album_name" name="album_name" >
+                    {{ request.session.all_albums }}
+                    {% for album in request.session.all_albums %}
+                        <option value="{{ album }}">{{ album }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" value="Remove Selected Album" />Remove Selected Album</button>
+        </form>
+    {% else %}
+        <h1>No Albums Found! Have you added any?</h1> <br />
+        <a href="{% url 'get_new_album_data' %}">Add an Album!</a> <br />
+    {% endif %}
+{% endblock %}

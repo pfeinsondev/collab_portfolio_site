@@ -1,0 +1,15 @@
+{% extends 'Front_End_base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block background-image %}
+    {% load static %}
+    <div class="container-fluid text-elegant content-justify-center " 
+        style="background-image: url('{% static 'Front_End/Kyle_Image_1.jpeg' %}'); background-repeat:no-repeat; background-position:center"> 
+{% endblock %}
+
+{% block main-content %}
+    <p class="text-secondary"> 
+        Contact Page!
+    </p>
+{% endblock %}

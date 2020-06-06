@@ -1,0 +1,44 @@
+{% extends 'admin_base.html' %}
+
+{% block main-content %}
+    {% if errors %}
+        {% for error in errors %}
+            {{error}}
+        {% endfor %}
+    {% endif %}
+    <h3>New Admin Registration Form</h3>
+    <form action= "register_new_admin" method = "post">
+    {% csrf_token %}
+    <div class="form-group-row">
+        <label for="first_name" class="col-2 col-form-label">First Name:</label>
+        <input class="form-control" placeholder="Enter First Name" type="text" name="first_name" />
+    </div>
+    <div class="form-group-row">
+        <label for="last_name" class="col-2 col-form-label">Last Name:</label>
+        <input class="form-control" placeholder="Enter Last Name" type="text" name="last_name" />
+    </div>
+    <div class="form-group-row">
+        <label for="username" class="col-2 col-form-label">Username:</label>
+        <input class="form-control" placeholder="Enter Username" type="text" name="username" />
+    </div>
+    <div class="form-group-row">
+        <label for="recovery_email" class="col-2 col-form-label">Recovery Email:</label>
+        <input type="text" class="form-control" placeholder="Enter Recovery Email"  name="recovery_email" />
+    </div>
+    <div class="form-group-row">
+        <label for="password" class="col-2 col-form-label">Password:</label>
+        <input class="form-control" placeholder="Enter a password" type="password" name="password" />
+    </div>
+    <div class="form-group-row">
+        <label for="password_confirmation" ="col-2 col-form-label">Password Confirmation:</label>
+        <input class="form-control" placeholder="Confirm Password" type="password" name="password_confirmation" />
+    </div>
+    <div class="form-group-row">
+        <label for="access_code" class="col-2 col-form-label">Registration Access Code:</label>
+        <input class="form-control" placeholder="Enter your access code" type="text" name="access_code" />
+    </div><br />
+    <div class="form-group-row">
+        <button class="btn btn-primary" type="submit" label="Register" value="Register"/>Register Admin</button>
+    </div>
+    </form>
+{% endblock %}

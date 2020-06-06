@@ -1,0 +1,30 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Admin/Update About Me{% endblock %}
+
+{% block main-content %}
+        {% if request.session.errors %}
+            {% for error in request.session.errors %}
+                {{ error }}
+            {% endfor %}
+        {% endif %}
+        <form action="process_new_about_me_data" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group shadow-textarea">
+                <label for="about_me_text" class="col-2 col-form-label">About Me Text</label>
+                <textarea class="form-control rounded-1 z-depth-1" rows="30" cols="80" name="about_me_text">
+                    {% if request.session.about_me_text %}
+                        {{ request.session.about_me_text }}
+                    {% endif %}
+                </textarea>
+            </div>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="about_me_image" name="about_me_image" required>
+                <label for="about_me_image" class="custom-file-label">About Me Image</label>
+            </div>
+            <div class="form-group">
+                <br />
+                <button class="btn btn-primary" type="submit" value="Post" >Update About Me</button>
+            </div>
+        </form>
+{% endblock %}
