@@ -1,6 +1,6 @@
 {% extends 'Front_End_base.html' %}
 
-{% block title %} Store {% endblock %}
+{% block title %} Tours {% endblock %}
 
 {% block background-image %}
     {% load static %}
@@ -9,20 +9,30 @@
 {% endblock %}
 
 {% block main-content %}
-    <div class="row w-auto" style="height:5%;"></div>
-    <div class="row h-auto w-100" style="text-align:center;">
-        {% if request.session.tours %}
-            {% for tour, shows in request.session.tours.items %}
-                <div class="col col-xs-6 col-s-6 col-m-6 col-l-6 col-xl-6 h-50 text-secondary">
-                    <Strong>{{ tour }}</strong><br /> <br />
-                    {% for individual_show, individual_show_info in shows.items %}
-                        {{ individual_show_info.show_city }}, 
-                        {{ individual_show_info.show_state }} <br />
-                        {{ individual_show_info.show_time }}
-                        {{ individual_show_info.show_date }} <br />
-                    {% endfor %}<br /><br />
-                </div>
-            {% endfor %}
+    <div class="overflow-auto">
+        {% if request.session.status %}
+            {% if request.session.tours %}
+                {% for tour in request.session.tours %}
+                    <div class="justify-content-center row h-50 ">
+                        <div class="col w-50 h-100">
+                            <img src="{{ tour.tour_image }}" alt="Tour Art" class="img-responsive img-thumbnail w-auto h-100" />
+                        </div>
+                        <div class="col w-50 h-100 text-secondary">
+                            <Strong>{{ tour.tour_name }}</strong>
+                            {% for show in tour.shows %}
+                                {{ show.show_city }}, 
+                                {{ show.show_state }} <br />
+                                {{ show.show_time }}
+                                {{ show.show_date }} <br />
+                            {% endfor %}<br /><br />
+                        </div>
+                        </div>
+                        <div class="spacer">
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
         {% endif %}
+        </div>
     </div>
 {% endblock %}

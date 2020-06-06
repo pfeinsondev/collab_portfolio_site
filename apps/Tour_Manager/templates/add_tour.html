@@ -8,11 +8,15 @@
             {{ error }}
         {% endfor %}
     {% endif %}
-    <form action="create_new_tour" method="post">
+    <form action="create_new_tour" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group-row">
             <label for="tour_name" class="col-form-label">Tour Name:</label>
             <input type="text" class="form-control" name="tour_name" />
+        </div>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" name="tour_image" id="tour_image" required>
+            <label class="custom-file-label">Tour Flier Image</label>
         </div><br />
         <div class="form-group">
             <button class="btn btn-primary" type="submit" value="Add Tour" >Add A Tour</button>

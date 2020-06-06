@@ -7,7 +7,7 @@ class Tour_Manager(models.Manager):
     #----------------#
     #--- Add Tour ---#
     #----------------#
-    def add_tour(self, post_data):
+    def add_tour(self, post_data, post_data_files):
         model_status = {}
         if not (len(post_data['tour_name']) > 0):
             model_status['status'] = False
@@ -18,7 +18,7 @@ class Tour_Manager(models.Manager):
                 model_status['status'] = False
                 model_status['errors'] = "Tour already exists"
             else:
-                new_tour = self.create(tour_name=post_data['tour_name'])
+                new_tour = self.create(tour_name=post_data['tour_name'], tour_image=post_data_files['tour_image'])
                 model_status['status'] = True
                 model_status['tour_name'] = new_tour
                 new_tour.save()
@@ -39,7 +39,7 @@ class Tour_Manager(models.Manager):
     #--- Get All tours ---#
     #---------------------#
     def get_all_tours(self):
-        all_tours = self.filter().values()
+        all_tours = self.filter()
         # Json Packaging information
         tour_json = {} # 'tour1' : tour_catalog; Final object structure: Dictionary<String, List<Dictionary<String, String>>>
         model_status = {}
@@ -47,14 +47,18 @@ class Tour_Manager(models.Manager):
         #    tour_names.append(tour['tour_name'])
         if all_tours:
             model_status['status'] = True
+            all_tours_list = []
             for tour in all_tours:
-                shows_by_tour = Show.shows.get_shows_by_tour(tour)
-                tour_json[tour['tour_name']] = shows_by_tour
-            model_status['tours'] = tour_json
+                tour_json = {}
+                tour_json['shows'] = Show.shows.get_shows_by_tour(tour.id)
+                tour_json['tour_name'] = tour.tour_name
+                tour_json['tour_image'] = tour.tour_image.url
+                all_tours_list.append(tour_json) 
+                
+            model_status['tours'] = all_tours_list
         else:
             model_status['status'] = False
             model_status['errors'] = "No Tours Found!"
-            model_status['tours'] = {}
         return model_status
     #-------------------#
     #--- Remove Tour ---#
@@ -74,6 +78,7 @@ class Tour_Manager(models.Manager):
 #------------------#
 class Tour(models.Model):
     tour_name = models.CharField(max_length=200)
+    tour_image = models.ImageField(upload_to="media/", blank = True)
     tours = Tour_Manager()
     
 #-------------#
@@ -104,8 +109,8 @@ class Show_Manager(models.Manager):
     #-------------------------#
     #--- Get Shows By Tour ---#
     #-------------------------#
-    def get_shows_by_tour(self, target_tour):
-        all_shows_by_tour = self.filter(tour=target_tour['id'])
+    def get_shows_by_tour(self, target_tour_id):
+        all_shows_by_tour = self.filter(id=target_tour_id)
         tour_catalog_data = {}
         for show in all_shows_by_tour:
             tour_catalog_data[show.id] = Show.shows.jsonify_show(show)

@@ -4,24 +4,25 @@
 
 {% block main-content %}
     {% if request.session.status %}
-        {% for tour, shows in request.session.tours.items %}
-            <div class="row h-auto w-100 " style="text-align:center;">
-                <div class="col">
-                    <Strong>{{ tour }}</strong>
-                </div>
-            </div>
-                    {% for individual_show, individual_show_info in shows.items %}
-                        <div class="row h-auto w-100">
-                            <div class="col w-50" style="text-align:center;">
-                                {{ individual_show_info.show_city }}, 
-                                {{ individual_show_info.show_state }} <br />
-                                {{ individual_show_info.show_time }}
-                                {{ individual_show_info.show_date }} <br />
-                            </div>
+                {% for tour in request.session.tours %}
+                    <div class = "row">
+                        <div class="col w-50 h-100">
+                            <img src="{{ tour.tour_image }}" alt="Tour Art" class="img-responsive img-thumbnail w-auto h-auto" />
                         </div>
-                    {% endfor %}
+                        <div class="col w-50 h-100 text-secondary">
+                            <Strong>{{ tour.tour_name }}</strong>
+                            {% for show in tour.shows %}
+                                {{ show.show_city }}, 
+                                {{ show.show_state }} <br />
+                                {{ show.show_time }}
+                                {{ show.show_date }} <br />
+                            {% endfor %}<br /><br />
+                        </div>
+                        </div>
+                        <div class="spacer">
+                    </div>
+                {% endfor %}
                 </div>
             </div>
-        {% endfor %}
     {% endif %}
 {% endblock %}

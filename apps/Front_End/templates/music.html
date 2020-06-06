@@ -13,7 +13,7 @@
     {% if request.session.status %}
         {% for album, album_details in request.session.all_music.items %}
             <div class="row h-50">
-                <div class="justify-content-center row music-row" >
+                <div class="justify-content-center row " >
                     <div class="col col-7 col-xs-7 col-s-7 col-md-6 col-lg-6 col-xl-5 ">
                         <img src="{{ album_details.album_image }}" alt="Album Art" class="img-responsive img-thumbnail w-100 h-auto" /><br />
                     </div>
@@ -28,10 +28,6 @@
             <div class="spacer">
             </div>
         {% endfor %}
-    {% else %}
-        {% if request.session.errors %}
-            {{ request.session.errors }} <br />
-        {% endif %}
     {% endif %}
 </div>
 {% endblock %}

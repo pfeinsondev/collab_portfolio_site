@@ -9,11 +9,11 @@ def all_tours(request):
     #request.session['tours'] = Tour.tours.get_all_tours
     response_from_models = Tour.tours.get_all_tours()
     if response_from_models['status']:
-        request.session['status'] = True
         request.session['tours'] = response_from_models['tours']
+        request.session['status'] = True
     else:
-        request.session['status'] = False
         request.session['errors'] = response_from_models['errors']
+        request.session['status'] = False
     return render(request, 'all_tours.html')
 
 # Form for getting new tour data
@@ -23,7 +23,7 @@ def get_new_tour_data(request):
 
 # Action for Creating a new tour
 def create_new_tour(request):
-    response_from_models = Tour.tours.add_tour(request.POST)
+    response_from_models = Tour.tours.add_tour(request.POST, request.FILES)
     if not response_from_models['status']:
         request.session['status'] = False
         request.session['errors'] = response_from_models['errors']
