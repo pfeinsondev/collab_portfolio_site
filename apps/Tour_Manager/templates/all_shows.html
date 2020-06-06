@@ -6,15 +6,15 @@
     {% if not request.session.status %}
         {{ request.session.errors }}
     {% else %}
-            {% for show, details in request.session.shows.items %}
+            {% for show in request.session.shows %}
                 <div class="row h-25">
                     <div class="col col-12 col-xs-12 col-s-12 col-m-12 col-l-12 col-xl-12">
-                        {{ details.show_time }}, {{ details.show_date }} <br />
+                        {{ show.show_time }}, {{ show.show_date }} <br />
                     </div>
                 </div>
                 <div class="row h-25">
                     <div class="col col-12 col-xs-12 col-s-12 col-m-12 col-l-12 col-xl-12">
-                        {{ details.show_city }}, {{ details.show_state}} <br />
+                        {{ show.show_city }}, {{ show.show_state}} <br />
                     </div>
                 </div><br/>
             {% endfor %}

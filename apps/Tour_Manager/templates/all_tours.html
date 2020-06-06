@@ -10,7 +10,7 @@
                             <img src="{{ tour.tour_image }}" alt="Tour Art" class="img-responsive img-thumbnail w-auto h-auto" />
                         </div>
                         <div class="col w-50 h-100 text-secondary">
-                            <Strong>{{ tour.tour_name }}</strong>
+                            <Strong>{{ tour.tour_name }}</strong><br /><br />
                             {% for show in tour.shows %}
                                 {{ show.show_city }}, 
                                 {{ show.show_state }} <br />

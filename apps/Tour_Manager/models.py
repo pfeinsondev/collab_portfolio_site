@@ -23,9 +23,9 @@ class Tour_Manager(models.Manager):
                 model_status['tour_name'] = new_tour
                 new_tour.save()
         return model_status
-    #----------------#
-    #--- Get Tour ---#
-    #----------------#
+    #------------------------#
+    #--- Get Tour by Name ---#
+    #------------------------#
     def get_tour(self, post_data):
         target_tour = self.get(tour_name=post_data['tour_name'])
         tour_status = {}
@@ -106,32 +106,7 @@ class Show_Manager(models.Manager):
             model_status['status'] = True
             model_status['show'] = self.jsonify_show(show)
         return model_status     
-    #-------------------------#
-    #--- Get Shows By Tour ---#
-    #-------------------------#
-    def get_shows_by_tour(self, target_tour_id):
-        all_shows_by_tour = self.filter(id=target_tour_id)
-        tour_catalog_data = {}
-        for show in all_shows_by_tour:
-            tour_catalog_data[show.id] = Show.shows.jsonify_show(show)
-        return tour_catalog_data
-    #---------------------#
-    #--- Get All Shows ---#
-    #---------------------#
-    def get_all_shows(self):
-        all_shows = self.filter()
-        model_status = {}
-        if all_shows:
-            show_catalog = {}
-            for show in all_shows:
-                show_catalog[show.id] = Show.shows.jsonify_show(show)
-            model_status['status'] = True
-            model_status['shows'] = show_catalog
-        else:
-            model_status['status'] = False
-            model_status['errors'] = "No Shows Found!"
-            model_status['shows'] = {}
-        return model_status
+
     #-------------------#
     #--- Delete Show ---#
     #-------------------#
@@ -145,13 +120,43 @@ class Show_Manager(models.Manager):
             model_status['status'] = False
             model_status['errors'] = "Unable to delete show"
         return model_status
-    #------------------------------------------------------------#
-    #--- Jsonify Show ---> Packages Show data to a dictionary ---#
-    #------------------------------------------------------------#
+    #---------------------#
+    #--- Get All Shows ---#
+    #---------------------#
+    def get_all_shows(self):
+        all_shows = self.filter()
+        model_status = {}
+        if all_shows:
+            show_catalog = []
+            for show in all_shows:
+                show_catalog.append(Show.shows.jsonify_show(show))
+            model_status['status'] = True
+            model_status['shows'] = show_catalog
+        else:
+            model_status['status'] = False
+            model_status['errors'] = "No Shows Found!"
+            model_status['shows'] = {}
+        return model_status
+    #-------------------------#
+    #--- Get Shows By Tour ---#
+    #-------------------------#
+    def get_shows_by_tour(self, target_tour_id):
+        tour_object_by_id = Tour.tours.filter(id=target_tour_id)
+        all_shows = self.filter(tour=tour_object_by_id[0])
+        shows_json_list = []
+        for show in all_shows:
+            shows_json_list.append( Show.shows.jsonify_show(show) )
+        return shows_json_list
+        #------------------------------------------------------------#
+        #--- Jsonify Show ---> Packages Show data to a dictionary ---#
+        #------------------------------------------------------------#
     def jsonify_show(self, show):
         json_show_data = {}
         json_show_data['show_city'] = show.show_city
         json_show_data['show_state'] = show.show_state
+        #-
+        # Time Formatting
+        #- 
         time_fragments = str(show.show_time).split(":")
         if int(time_fragments[0]) > 12:
             time_fragments[0] = str(int(time_fragments[0])-12)
@@ -160,9 +165,13 @@ class Show_Manager(models.Manager):
             time_period = "AM"
         human_readable_time = time_fragments[0] + ":" + time_fragments[1] + " " + time_period
         json_show_data['show_time'] = human_readable_time
+        #-
+        # Date Formatting 
+        #- 
         date_fragments = str(show.show_date).split("-")
         human_readable_date = date_fragments[1] + "-" + date_fragments[2] + "-" + date_fragments[0]
         json_show_data['show_date'] = human_readable_date
+        json_show_data['tour'] = show.tour.id
         return json_show_data
 #------------------#
 #--- Show Model ---#

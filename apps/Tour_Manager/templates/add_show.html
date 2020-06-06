@@ -23,7 +23,7 @@
                 {% if request.session.tours %}
                     <select class="form-control" id="tour_name" name="tour_name" >
                         {% for tour in request.session.tours %}
-                            <option value="{{ tour }}">{{ tour }}</option>
+                            <option value="{{ tour.tour_name }}">{{ tour.tour_name }}</option>
                         {% endfor %}
                     </select>
                 {% endif %}

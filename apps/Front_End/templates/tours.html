@@ -5,7 +5,7 @@
 {% block background-image %}
     {% load static %}
     <div class="container-fluid text-elegant content-justify-center" 
-        style="background-image: url('{% static 'Front_End/kyle_Image_3.jpeg' %}'); background-repeat:no-repeat; background-position:center">  
+        style="background-image: url('{% static 'Front_End/background_image_black' %}'); background-repeat:no-repeat; background-position:center">  
 {% endblock %}
 
 {% block main-content %}
@@ -18,12 +18,12 @@
                             <img src="{{ tour.tour_image }}" alt="Tour Art" class="img-responsive img-thumbnail w-auto h-auto" />
                         </div>
                         <div class="col w-50 text-secondary">
-                            <Strong>{{ tour.tour_name }}</strong>
+                            <Strong>{{ tour.tour_name }}</strong><br /><br />
                             {% for show in tour.shows %}
-                                {{ show.show_city }}, 
-                                {{ show.show_state }} <br />
-                                {{ show.show_time }}
-                                {{ show.show_date }} <br />
+                                &nbsp;&nbsp;&nbsp;{{ show.show_city }}, 
+                                &nbsp;&nbsp;&nbsp;{{ show.show_state }} <br />
+                                &nbsp;&nbsp;&nbsp;{{ show.show_time }}
+                                &nbsp;&nbsp;&nbsp;{{ show.show_date }} <br />
                             {% endfor %}<br /><br />
                         </div>
                         </div>
