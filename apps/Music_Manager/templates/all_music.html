@@ -6,7 +6,7 @@
     <div class="overflow-auto">
     {% if request.session.status %}
         {% for album, album_details in request.session.all_music.items %}
-            <div class="row h-50 w-100">
+            <div class="row h-auto w-100">
                     <div class="col col-7 col-xs-7 col-s-7 col-md-6 col-lg-6 col-xl-6 music-row" >
                         <img src="{{ album_details.album_image }}" class="img-responsive img-thumbnail w-100 h-auto" alt="Album Art"/><br />
                     </div>  
