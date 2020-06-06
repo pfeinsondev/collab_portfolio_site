@@ -32,6 +32,11 @@
                     <nav class="navbar navbar-expand-lg collapse navbar-collapse justify-content-center w-100"  id="main-navigation">
                         <ul class="navbar-nav"> 
                             <div class="col"> 
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'admin_index' %}" aria-disabled="false">Admin Index</a>
+                                </li>
+                            </div>
+                            <div class="col"> 
                                 <li class="nav-item ">
                                     <a class="nav-link" href="{% url 'all_music' %}" aria-disabled="true">All Music</a>
                                 </li>
@@ -54,11 +59,6 @@
                             <div class="col">
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'select_song_to_delete' %}" aria-disabled="false">Delete Song</a>
-                                </li>
-                            </div>
-                            <div class="col"> 
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'admin_index' %}" aria-disabled="false">Admin Index</a>
                                 </li>
                             </div>
                         </ul> <!-- navbar-nav -->
