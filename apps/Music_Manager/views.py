@@ -31,7 +31,7 @@ def process_album_data(request):
     response_from_models = Album.albums.add_album(request.POST, request.FILES)
     if response_from_models['status']:
         request.session['new_album_added_bool'] = True
-        return get_all_albums(request)
+        return get_all_music(request)
     else:
         request.session['errors'] = response_from_models['errors'] 
         return get_new_album_data(request)
@@ -90,10 +90,11 @@ def get_all_songs(request):
 def get_new_song_data(request):
     response_from_models = Album.albums.get_all_albums()
     if response_from_models['status']:
+        request.session['status'] = True
         request.session['albums'] = response_from_models['all_albums']
     else:
-        request.session['errors'] = response_from_models['errors']
-        return get_all_songs(request)
+        request.session['status'] = False
+        request.session['errors'] = "Cannot add a song without an album!"
     return render(request, 'add_song.html')
 
 def process_song_data(request):
