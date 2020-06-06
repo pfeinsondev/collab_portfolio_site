@@ -14,10 +14,10 @@
             {% if request.session.tours %}
                 {% for tour in request.session.tours %}
                     <div class="justify-content-center row h-50 ">
-                        <div class="col w-50 h-100">
-                            <img src="{{ tour.tour_image }}" alt="Tour Art" class="img-responsive img-thumbnail w-auto h-100" />
+                        <div class="col w-50">
+                            <img src="{{ tour.tour_image }}" alt="Tour Art" class="img-responsive img-thumbnail w-auto h-auto" />
                         </div>
-                        <div class="col w-50 h-100 text-secondary">
+                        <div class="col w-50 text-secondary">
                             <Strong>{{ tour.tour_name }}</strong>
                             {% for show in tour.shows %}
                                 {{ show.show_city }}, 
@@ -30,9 +30,7 @@
                         <div class="spacer">
                     </div>
                 {% endfor %}
-            </div>
             {% endif %}
         {% endif %}
-        </div>
     </div>
 {% endblock %}
