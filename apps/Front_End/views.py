@@ -34,7 +34,7 @@ def tours_page(request):
         request.session['status'] = True
     else:
         request.session['errors'] = response_from_models['errors']
-        rqeuest.session['status'] = False
+        request.session['status'] = False
     return render(request, 'tours.html')
 
 # Store Page
