@@ -20,6 +20,7 @@ def get_all_items(request):
 #----------------#
 
 def get_item_info(request):
+    request.session['status'] = True
     return render(request, 'get_item_info.html')
 
 def process_item_info(request):
@@ -27,7 +28,7 @@ def process_item_info(request):
     if not response_from_models['status']:
         request.session['errors'] = response_from_models['errors']
         request.session['status'] = False
-        return get_item_info(request)
+        return render(request, 'get_item_info.html')
     else:
         request.session['status'] = True
         return get_all_items(request)

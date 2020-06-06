@@ -12,17 +12,17 @@
 
 {% block main-content %}
     {% if request.session.status %}
-        <div class="row music-row">
+        <div class="overflow-auto">
             {% for item in request.session.all_items %}
-                <div class="col col-6">
-                    <img class="img-responsive w-auto h-auto" src="{{ item.item_image }}" /> <br /><br />
-                </div>
-                <div class="col col-6">
-                    {{ item.item_name }} <br />
-                    {{ item.item_price }} <br />
-                    {{ item.item_description }} <br />
-                    !! Add to Cart !! <br />
-                    !! Checkout with paypal !!  <br />
+                <div class="row h-50">
+                    <div class="col col-6">
+                        <img class="img-responsive w-auto h-auto" src="{{ item.item_image }}" /> <br /><br />
+                    </div>
+                    <div class="col col-6">
+                        <strong>{{ item.item_name }}</strong><br /> <br />
+                        {{ item.item_price }} <br />
+                        {{ item.item_description }} <br />
+                    </div>
                 </div>
             {% endfor %}
         </div>

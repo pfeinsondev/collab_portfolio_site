@@ -4,19 +4,19 @@
 
 {% block main-content %}
     {% if request.session.status %}
-        <div class="row store-row">
-            {% for item in request.session.all_items %}
+        <div class="force-overflow">
+        {% for item in request.session.all_items %}
+            <div class="row h-auto">
                 <div class="col h-50 w-50">
                     <img class="img-responsive img-thumbnail" src="{{ item.item_image }}" /> <br /><br />
                 </div>
                 <div class="col h-50 w-50">
-                    {{ item.item_name }} <br />
-                    {{ item.item_price }} <br />
+                    <strong>{{ item.item_name }}</strong><br /> <br />
+                    {{ item.item_price }}$ <br />
                     {{ item.item_description }} <br />
-                    !! Add to Cart !! <br />
-                    !! Checkout with paypal !!  <br />
                 </div>
-            {% endfor %}
+            </div>
+        {% endfor %}
         </div>
     {% else %}
         <h1>No items found! Have you added any? </h1>

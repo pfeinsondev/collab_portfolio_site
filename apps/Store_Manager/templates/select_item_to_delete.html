@@ -7,7 +7,7 @@
     {% if request.session.status %}
     <form action='delete_item' method='post'>
         {% csrf_token %}
-        <div class="form-group">
+        <div class="form-group h-auto">
         
             <label for="item_name_to_delete" class="form-select-label">Item To Delete:</label>
             <select class="form-control" id='item_name_to_delete' name='item_name_to_delete'>
@@ -16,8 +16,9 @@
             {% endfor %}
             </select>
         </div>
-        <div class="form-group">
+        <div class="form-group h-auto">
             <button class="btn btn-primary" type="Submit" value="Delete Item">Delete Selected Item</button>
+        </div>
     </form>
     
     <!-- Error path -->
