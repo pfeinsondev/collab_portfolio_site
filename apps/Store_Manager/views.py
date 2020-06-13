@@ -20,9 +20,15 @@ def get_all_items(request):
 #----------------#
 
 def get_item_info(request):
-    request.session['status'] = True
-    return render(request, 'get_item_info.html')
-
+    if ('logged_in' in request.session):
+        if request.session['logged_in']:
+            request.session['status'] = True
+            return render(request, 'get_item_info.html')
+        else:
+            return not_authenticated(request)
+    else:
+        return not_authenticated(request)
+    
 def process_item_info(request):
     response_from_models = Store.stores.add_item(request.POST, request.FILES)
     if not response_from_models['status']:
@@ -39,16 +45,22 @@ def process_item_info(request):
 #-------------------#
 
 def select_item_to_delete(request):
-    request.session['item_deleted_bool'] = False
-    response_from_models = Store.stores.get_all_item_names()
-    if response_from_models['status']:
-        request.session['all_item_names'] = response_from_models['all_item_names']
-        request.session['status'] = True
+    if ('logged_in' in request.session):
+        if request.session['logged_in']:
+            request.session['item_deleted_bool'] = False
+            response_from_models = Store.stores.get_all_item_names()
+            if response_from_models['status']:
+                request.session['all_item_names'] = response_from_models['all_item_names']
+                request.session['status'] = True
+            else:
+                request.session['status'] = False
+                request.session['errors'] = response_from_models['errors']
+            return render(request, 'select_item_to_delete.html')
+        else:
+            return not_authenticated(request)
     else:
-        request.session['status'] = False
-        request.session['errors'] = response_from_models['errors']
-    return render(request, 'select_item_to_delete.html')
-
+        return not_authenticated(request)
+    
 def delete_item(request):
     response_from_models = Store.stores.delete_item(request.POST['item_name_to_delete'])
     if response_from_models['status']:
@@ -64,3 +76,11 @@ def delete_item(request):
     else:
         request.session['item_deleted_bool'] = False
         return render(request, 'select_item_to_delete.html')
+
+
+# Not logged in method
+def not_authenticated(request):
+    request.session['status'] = False
+    request.session['errors'] = []
+    request.session['errors'] = "Must be logged in"
+    return redirect('/login_admin')

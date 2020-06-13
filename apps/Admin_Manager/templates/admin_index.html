@@ -6,21 +6,16 @@
 {% block main-content %}
     <div class="row">
         <div class="col">
-            <Strong>Admin</Strong><br />
-            <a class="bootstrap-link" href="{% url 'collect_new_admin_data' %}">Register A New Admin</a><br /><br />
-        </div>
-        <div class="col">
-    <Strong>Tours</Strong><br />
+            <Strong>Tours</Strong><br />
             <a href="{% url 'get_new_show_data' %}">Add A Show</a><br />
             <a href="{% url 'get_new_tour_data' %}" >Add A Tour</a><br />
             <a href="{% url 'get_all_shows' %}">View All Shows</a><br />
             <a href="{% url 'all_tours' %}">All Tours</a><br />
             <a href="{% url 'select_tour_to_delete' %}">Remove a Tour</a><br />
             <a href="{% url 'select_show_to_delete' %}">Remove a Show</a><br /><br />
-
         </div>
         <div class="col">
-    <Strong>Music</Strong><br />
+            <Strong>Music</Strong><br />
             <a href="{% url 'all_music' %}">All Music</a><br />
             <a href="{% url 'get_new_album_data' %}">Add Album</a><br />
             <a href="{% url 'get_new_song_data' %}">Add Song</a><br />
@@ -40,9 +35,21 @@
             <a href="{% url 'select_post_to_delete' %}">Delete Post </a><br /><br />
         </div>
         <div class="col">
+            <strong>Art</strong><br />
+            <a href="{% url 'all_art' %}">All Art</a><br />
+            <a href="{% url 'get_new_art_details' %}">Add Art</a><br />
+            <a href="{% url 'select_art_to_delete' %}">Delete Art</a><br />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <Strong>About Page</Strong><br />
             <a href="{% url 'get_current_about_me_data' %}">Current About Me</a><br />
             <a href="{% url 'collect_new_about_me_data' %}">Update About Me</a><br /><br />
+        </div>
+        <div class="col">
+            <Strong>Admin</Strong><br />
+            <a class="bootstrap-link" href="{% url 'collect_new_admin_data' %}">Register A New Admin</a><br /><br />
         </div>
     </div>
 {% endblock %}

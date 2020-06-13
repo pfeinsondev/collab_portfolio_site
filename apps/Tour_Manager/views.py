@@ -18,9 +18,15 @@ def all_tours(request):
 
 # Form for getting new tour data
 def get_new_tour_data(request):
-    request.session['status'] = True
-    return render(request, 'add_tour.html')
-
+    if ('logged_in' in request.session):
+        if request.session['logged_in']:
+            request.session['status'] = True
+            return render(request, 'add_tour.html')
+        else:
+            return not_authenticated(request)
+    else:
+        return not_authenticated(request)
+    
 # Action for Creating a new tour
 def create_new_tour(request):
     response_from_models = Tour.tours.add_tour(request.POST, request.FILES)
@@ -35,16 +41,22 @@ def create_new_tour(request):
 
 # Action for marking tour to remove
 def select_tour_to_delete(request):
-    response_from_models = Tour.tours.get_all_tours()
-    if response_from_models['status']:
-        request.session['errors'] = ""
-        request.session['status'] = True
-        request.session['tours'] = response_from_models['tours']
+    if ('logged_in' in request.session):
+        if request.session['logged_in']:
+            response_from_models = Tour.tours.get_all_tours()
+            if response_from_models['status']:
+                request.session['errors'] = ""
+                request.session['status'] = True
+                request.session['tours'] = response_from_models['tours']
+            else:
+                request.session['errors'] = response_from_models['errors']
+                request.session['status'] = False
+            return render(request, 'remove_tour.html')
+        else:
+            return not_authenticated(request)
     else:
-        request.session['errors'] = response_from_models['errors']
-        request.session['status'] = False
-    return render(request, 'remove_tour.html')
-
+        return not_authenticated(request)
+    
 # Action for removing a tour from catalog
 def remove_tour(request):
     response_from_models = Tour.tours.remove_tour(request.POST)
@@ -62,15 +74,21 @@ def remove_tour(request):
 
 # Form for adding a new show
 def get_new_show_data(request):
-    response_from_models = Tour.tours.get_all_tours()
-    if response_from_models['status']:
-        request.session['status'] = True
-        request.session['tours'] = response_from_models['tours']
+    if ('logged_in' in request.session):
+        if request.session['logged_in']:
+            response_from_models = Tour.tours.get_all_tours()
+            if response_from_models['status']:
+                request.session['status'] = True
+                request.session['tours'] = response_from_models['tours']
+            else:
+                request.session['status'] = False
+                request.session['errors'] = response_from_models['errors']
+            return render(request, 'add_show.html')
+        else:
+            return not_authenticated(request)
     else:
-        request.session['status'] = False
-        request.session['errors'] = response_from_models['errors']
-    return render(request, 'add_show.html')
-
+        return not_authenticated(request)
+    
 # Action for creating a new show
 def create_new_show(request):
     response_from_models =  Show.shows.add_show(request.POST)
@@ -95,16 +113,21 @@ def get_all_shows(request):
 
 # Select Show To Remove
 def select_show_to_delete(request):
-    response_from_models = Show.shows.get_all_shows()
-    if response_from_models['status']:
-        request.session['errors'] = ""
-        request.session['shows'] = response_from_models['shows']
-        request.session['status'] = True
+    if ('logged_in' in request.session):
+        if request.session['logged_in']:
+            response_from_models = Show.shows.get_all_shows()
+            if response_from_models['status']:
+                request.session['errors'] = ""
+                request.session['shows'] = response_from_models['shows']
+                request.session['status'] = True
+            else:
+                request.session['errors'] = response_from_models['errors']
+                request.session['status'] = False
+            return render(request, 'remove_show.html')
+        else:
+            return not_authenticated(request)
     else:
-        request.session['errors'] = response_from_models['errors']
-        request.session['status'] = False
-    return render(request, 'remove_show.html')
-
+        return not_authenticated(request)
 # Delete Show Route
 def remove_show(request):
     response_from_models = Show.shows.delete_show(request.POST['show_id'])
@@ -124,3 +147,11 @@ def delete_session(request):
     request.session['tour_added_bool'] = False
     request.session['tours'] = {}
     request.session['shows'] = {}
+    
+# Not logged in method
+def not_authenticated(request):
+    request.session['status'] = False
+    request.session['errors'] = []
+    request.session['errors'] = "Must be logged in"
+    return redirect('/login_admin')
+

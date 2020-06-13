@@ -1,0 +1,30 @@
+{% extends 'art_base.html' %}
+
+{% block title %}All Art{% endblock %}
+
+{% block main-content %}
+    <div class="overflow-auto" style="text-align:center;" >
+    {% if request.session.status %}
+        {% if request.session.all_art %}
+            <div class="row h-100 w-100">
+                {% for art in request.session.all_art %}
+                    <div class="row h-50 w-50">
+                        <div class="col-12">
+                            <div class="row"  style="height:95%">
+                                <div class="col-12">
+                                    <img src="{{ art.art_image }}" class="img-responsive h-100 w-auto" alt="Art"/>
+                                </div>
+                            </div>
+                            <div class="row" style="height:5%;">
+                                <div class="col-12">
+                                    {{ art.art_name }}, {{ art.art_date }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endif %}
+    </div>
+{% endblock %}

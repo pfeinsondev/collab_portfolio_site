@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'apps.Music_Manager',
     'apps.Store_Manager',
     'apps.Front_End',
-    'apps.NewsFeed_Manager'
+    'apps.NewsFeed_Manager',
+    'apps.Art_Manager',
 ]
 
 MIDDLEWARE = [

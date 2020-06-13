@@ -1,0 +1,33 @@
+{% extends 'art_base.html' %}
+
+{% block title %}Delete A Piece{% endblock %}
+
+{% block main-content %}
+    {% if request.session.status %}
+        {% if request.session.all_art %}
+            <form action="delete_art" method="post">
+                {% csrf_token %}
+                <div class="form-group h-auto">
+                    <label for="art_id_to_delete" class="w-auto col-select-label">Piece Name:</label>
+                    <select class="form-control" id="art_id_to_delete" name="art_id_to_delete" >
+                        {% for art in request.session.all_art %}
+                            <option value="{{ art.id }}">{{ art.art_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group h-auto">
+                    <button type="submit" class="btn btn-primary" value="Remove Selected Art" />Delete Art</button>
+                </div>
+            </form>
+        {% endif %}
+    {% else %}
+        {% if request.session.errors %}
+            <div class="row h-auto w-auto">
+                <div class="col-12">    
+                    <strong>No Art Found! Have you added any?</strong> <br />
+                    <a href="{% url 'get_new_art_details' %}">Add Art</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

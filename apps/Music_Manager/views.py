@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from ..Music_Manager.models import Album, Song
 #--------------#
 #--------------#
@@ -24,9 +24,14 @@ def get_all_albums(request):
 #--- Add Album ---#
 #-----------------#
 def get_new_album_data(request):
-    request.session['errors'] = []
-    return render(request, 'add_album.html')
-        
+    if ('logged_in' in request.session):
+        if request.session['logged_in']:
+            return render(request, 'add_album.html')
+        else:
+            return not_authenticated(request)
+    else:
+        return not_authenticated(request)
+    
 def process_album_data(request):
     response_from_models = Album.albums.add_album(request.POST, request.FILES)
     if response_from_models['status']:
@@ -39,14 +44,19 @@ def process_album_data(request):
 #--- Delete Album ---#
 #--------------------#
 def select_album_to_delete(request):
-    response_from_models = Album.albums.get_all_albums()
-    if response_from_models['status']:
-        request.session['all_albums'] = response_from_models['all_albums']
+    if ('logged_in' in request.session):
+        if request.session['logged_in']:
+            response_from_models = Album.albums.get_all_albums()
+            if response_from_models['status']:
+                request.session['all_albums'] = response_from_models['all_albums']
+            else:
+                request.session['all_albums'] = ""
+                request.session['errors'] = response_from_models['errors']
+                return render(request, 'delete_album.html')
+        else:
+            return not_authenticated()
     else:
-        request.session['all_albums'] = ""
-        request.session['errors'] = response_from_models['errors']
-    return render(request, 'delete_album.html')
-
+        return not_authenticated()
 def delete_album(request):
     response_from_models = Album.albums.delete_album(request.POST)
     if response_from_models['status']:
@@ -88,15 +98,21 @@ def get_all_songs(request):
 #--- Add Song ---#
 #----------------#
 def get_new_song_data(request):
-    response_from_models = Album.albums.get_all_albums()
-    if response_from_models['status']:
-        request.session['status'] = True
-        request.session['albums'] = response_from_models['all_albums']
+    if ('logged_in' in request.session):
+        if request.session['logged_in']:
+            response_from_models = Album.albums.get_all_albums()
+            if response_from_models['status']:
+                request.session['status'] = True
+                request.session['albums'] = response_from_models['all_albums']
+            else:
+                request.session['status'] = False
+                request.session['errors'] = "Cannot add a song without an album!"
+            return render(request, 'add_song.html')
+        else:
+            return not_authenticated(request)
     else:
-        request.session['status'] = False
-        request.session['errors'] = "Cannot add a song without an album!"
-    return render(request, 'add_song.html')
-
+        return not_authenticated(request)
+    
 def process_song_data(request):
     response_from_models = Song.songs.add_song(request.POST)
     if response_from_models['status']:
@@ -110,11 +126,20 @@ def process_song_data(request):
 #--- Delete Song ---#
 #-------------------#
 def select_song_to_delete(request):
-    all_songs = Song.songs.get_all_songs()
-    if all_songs['status']:
-        request.session['songs'] = all_songs['all_songs_json']
-    return render(request, 'select_song_to_delete.html')
-
+    if ('logged_in' in request.session):
+        if request.session['logged_in']:
+            all_songs = Song.songs.get_all_songs()
+            if all_songs['status']:
+                request.session['songs'] = all_songs['all_songs_json']
+                return render(request, 'select_song_to_delete.html')
+            else:
+                request.session['status'] = False
+                return render(request, 'select_song_to_delete.html')
+        else:
+            return not_authenticated(request)
+    else:
+        return not_authenticated(request)
+    
 def delete_song(request):
     models_response = Song.songs.delete_song(request.POST)
     if models_response['status']:
@@ -150,3 +175,11 @@ def get_all_music(request):
         request.session['status'] = False
         request.session['errors'] = response_from_models['errors']
     return render(request, 'all_music.html')
+
+# Not logged in method
+def not_authenticated(request):
+    request.session['logged_in'] = False
+    request.session['status'] = False
+    request.session['errors'] = []
+    request.session['errors'] = "Must be logged in"
+    return redirect('/login_admin')

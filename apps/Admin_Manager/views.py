@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from ..Admin_Manager.models import Admin
 from ..Front_End.models import AboutInformation
 
@@ -6,12 +6,19 @@ from ..Front_End.models import AboutInformation
 #--- Admin Landing Page ---#
 #--------------------------#
 def admin_index(request):
-    return render(request, 'admin_index.html')
-
+    if ('logged_in' in request.session):
+        if request.session['logged_in']:
+            return render(request, 'admin_index.html')
+        else:
+            return not_authenticated(request)
+    else:
+        return not_authenticated()
 #-----------------------#
 #--- Admin Form Page ---#
 #-----------------------#
 def admin_login(request):
+    if not ('logged_in' in request.session):
+        request.session['logged_in'] = False
     return render(request, 'login.html')
 
 #--------------------------------#
@@ -20,10 +27,10 @@ def admin_login(request):
 def authenticate_admin(request):
     response_from_models = Admin.admins.login(request.POST)
     if response_from_models['status']:
+        request.session['logged_in'] = True
         return render(request, 'admin_index.html')
     else:
-        request.session['errors'] = response_from_models['errors']
-        return admin_login(request)
+        return not_authenticated(request)
 
 
 #-------------------------------#
@@ -31,8 +38,14 @@ def authenticate_admin(request):
 #-------------------------------#
     
 def collect_new_admin_data(request):
-    return render(request, 'register.html')
-
+    if ('logged_in' in request.session):
+        if (request.session['logged_in']):
+            return render(request, 'register.html')
+        else:
+            return not_authenticated()
+    else:
+        return not_authenticated(request)
+    
 #---------------------------------------#
 #--- Process Admin Registration Form ---#
 #---------------------------------------#
@@ -44,7 +57,9 @@ def register_new_admin(request):
         request.session['registration_success'] = True
         return registration_success(request)
     else:
-        return collect_new_admin_data(request)
+        request.session['status'] = False
+        request.session['errors'] = response_from_models['errors']        
+        return render(request, 'login.html')
 
 #----------------------------------------#
 #--- Admin Registration Success Route ---#
@@ -58,31 +73,45 @@ def reset_password_request(request):
 #--- Get Current About Me Information ---#
 #----------------------------------------#
 def get_current_about_me_data(request):
-    response_from_models = AboutInformation.about_me_manager.get_about_me_information()
-    if response_from_models['status']:
-        current_information = response_from_models['current_information']
-        request.session['about_me_text'] = current_information['about_me_text']
-        request.session['about_me_image'] = current_information['about_me_image'].url
-        request.session['status'] = True
+    if ('logged_in' in request.session):
+        if request.session['logged_in']:
+            response_from_models = AboutInformation.about_me_manager.get_about_me_information()
+            if response_from_models['status']:
+                current_information = response_from_models['current_information']
+                request.session['about_me_text'] = current_information['about_me_text']
+                request.session['about_me_image'] = current_information['about_me_image'].url
+                request.session['status'] = True
+            else:
+                request.session['errors'] = response_from_models['errors']
+                request.session['status'] = False
+            return render(request, 'admin_about_me.html')
     else:
-        request.session['errors'] = response_from_models['errors']
         request.session['status'] = False
-    return render(request, 'admin_about_me.html')
-
+        request.session['errors'] = []
+        request.session['errors'].append("must be logged in ")
+        return admin_login(request)
+        
 #---------------------------------#
 #--- Update About Me Form Page ---#
 #---------------------------------#
 def collect_new_about_me_data(request):
-    response_from_models = AboutInformation.about_me_manager.get_about_me_information()
-    if response_from_models['status']:
-        current_information = response_from_models['current_information']
-        request.session['about_me_text'] = current_information['about_me_text']
-        request.session['status'] = True
+    if ('logged_in' in request.session):
+        if request.session['logged_in']:
+            response_from_models = AboutInformation.about_me_manager.get_about_me_information()
+            if response_from_models['status']:
+                current_information = response_from_models['current_information']
+                request.session['about_me_text'] = current_information['about_me_text']
+                request.session['status'] = True
+            else:
+                request.session['errors'] = []
+                request.session['errors'] = response_from_models['errors']
+                request.session['status'] = False
+                return render(request, 'admin_update_about_me.html')
+        else:
+            return not_authenticated(request)
     else:
-        request.session['errors'] = response_from_models['errors']
-        request.session['status'] = False
-    return render(request, 'admin_update_about_me.html')
-
+        return not_authenticated(request)
+    
 #------------------------------------#
 #--- Process Update About Me Form ---#
 #------------------------------------#
@@ -98,3 +127,10 @@ def process_new_about_me_data(request):
         request.session['status'] = False
         request.session['errors'] = response_from_models['errors']
         return render(request, 'admin_update_about_me.html')
+
+# Not logged in method
+def not_authenticated(request):
+    request.session['status'] = False
+    request.session['errors'] = []
+    request.session['errors'] = "Must be logged in"
+    return redirect('/login_admin')

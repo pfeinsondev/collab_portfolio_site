@@ -19,8 +19,13 @@ def get_all_newsfeed_entries(request):
 #   New Post Form   #
 #-------------------#
 def collect_new_entry_data(request):
-    return render(request, 'collect_new_entry_data.html')
-
+    if ('logged_in' in request.session):
+        if request.session['logged_in']:
+            return render(request, 'collect_new_entry_data.html')
+        else:
+            return not_authenticated(request)
+    else:
+        return not_authenticated(request)
 #---------------------------#
 #   Process New Post Data   #
 #---------------------------#
@@ -38,15 +43,20 @@ def process_new_entry_data(request):
 #   Delete Post Form   #
 #----------------------#
 def select_post_to_delete(request):
-    response_from_models = NewsFeed.newsfeed_manager.get_all_entries()
-    if response_from_models['status']:
-        request.session['status'] = True
-        request.session['entries_list_json']
+    if ('logged_in' in request.session):
+        if request.session['logged_in']:
+            response_from_models = NewsFeed.newsfeed_manager.get_all_entries()
+            if response_from_models['status']:
+                request.session['status'] = True
+                request.session['entries_list_json']
+            else:
+                request.session['status'] = False
+                request.session['errors'] = "No Posts Found!"
+            return render(request, 'select_post_to_delete.html')
+        else:
+            return not_authenticated(request)
     else:
-        request.session['status'] = False
-        request.session['errors'] = "No Posts Found!"
-    return render(request, 'select_post_to_delete.html')
-
+        return not_authenticated(request)
 #-----------------#
 #   Delete Post   #
 #-----------------#
@@ -60,3 +70,9 @@ def delete_post(request):
         request.session['errors'] = response_from_models['errors']
         return render(request, 'select_post_to_delete.html')
     
+# Not logged in method
+def not_authenticated(request):
+    request.session['status'] = False
+    request.session['errors'] = []
+    request.session['errors'] = "Must be logged in"
+    return redirect('/login_admin')

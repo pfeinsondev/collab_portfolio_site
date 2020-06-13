@@ -3,20 +3,20 @@
 {% block title %}Admin/All Music{% endblock %}
 
 {% block main-content %}
-    <div class="overflow-auto">
+    <div class="overflow-auto h-100 w-100" style="text-align:center;">
     {% if request.session.status %}
         {% for album, album_details in request.session.all_music.items %}
             <div class="row h-auto w-100">
-                    <div class="col col-7 col-xs-7 col-s-7 col-md-6 col-lg-6 col-xl-6 music-row" >
-                        <img src="{{ album_details.album_image }}" class="img-responsive img-thumbnail w-100 h-auto" alt="Album Art"/><br />
-                    </div>  
-                    <div class="col col-5 col-xs-5 col-s-5 col-md-6 col-lg-6 col-xl-6">
-                        {{ album }} <br />
-                    
-                        {% for song in album_details.album_songs %}
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ song.song_name }} <br />
-                        {% endfor %}
-                    </div>
+                <div class="col col-7 col-xs-7 col-s-7 col-md-6 col-lg-6 col-xl-6 music-row" >
+                    <img src="{{ album_details.album_image }}" class="img-responsive img-thumbnail w-100 h-auto" alt="Album Art"/><br /><br />
+                </div>  
+                <div class="col col-5 col-xs-5 col-s-5 col-md-6 col-lg-6 col-xl-6">
+                    {{ album }} <br />
+                
+                    {% for song in album_details.album_songs %}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ song.song_name }} <br />
+                    {% endfor %}
+                </div>
             </div>
     {% endfor %}
     </div>

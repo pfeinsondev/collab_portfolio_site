@@ -1,12 +1,11 @@
 {% extends 'admin_base.html' %}
 
 {% block main-content %}
-    {% if request.session.errors %}
+    {% if not request.session.status %}
         {% for error in request.session.errors %}
             {{error}}
         {% endfor %}
     {% endif %}
-    <h3>Login:</h3>
     <form action="authenticate_admin" method="post" >
         {% csrf_token %}
         <div class="form-group-row">

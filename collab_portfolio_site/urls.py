@@ -12,6 +12,7 @@ urlpatterns = [
     path('', include('apps.Store_Manager.urls')),
     path('', include('apps.Front_End.urls')),
     path('', include('apps.NewsFeed_Manager.urls')),
+    path('', include('apps.Art_Manager.urls')),
     path('admin_home', apps.Admin_Manager.views.admin_index, name='admin_index')
     #url(r'collect_new_admin_data', apps.Admin_Manager.views.collect_new_admin_data),
     #url(r'login_admin', apps.Admin_Manager.views.admin_login)

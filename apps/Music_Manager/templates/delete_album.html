@@ -11,16 +11,17 @@
     {% if request.session.albums %}
         <form action="delete_album" method="post">
             {% csrf_token %}
-            <div class="form-group">
+            <div class="form-group h-auto">
                 <label for="album_name" class="w-auto col-select-label">Album Name:</label>
                 <select class="form-control" id="album_name" name="album_name" >
-                    {{ request.session.all_albums }}
                     {% for album in request.session.all_albums %}
                         <option value="{{ album }}">{{ album }}</option>
                     {% endfor %}
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary" value="Remove Selected Album" />Remove Selected Album</button>
+            <div class="form-group h-auto">
+                <button type="submit" class="btn btn-primary" value="Remove Selected Album" />Remove Selected Album</button>
+            </div>
         </form>
     {% else %}
         <h1>No Albums Found! Have you added any?</h1> <br />

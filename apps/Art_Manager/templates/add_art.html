@@ -1,0 +1,32 @@
+{% extends 'art_base.html' %}
+
+{% block title %}Add Art{% endblock %}
+
+{% block main-content %}
+    {% if not request.session.status %}
+        {% if request.session.errors %}
+            {% for error in request.session.errors %}
+                {{ error }}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+    <form action="process_new_art" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group h-auto">
+            <label for="art_name" class="col-form-label">Piece Name:</label>
+            <input type="text" class="form-control" id="art_name" name="art_name" placeholder="Enter piece name"/>
+        </div>
+        <div class="form-group h-auto">
+            <label class="col-form-label col-2">Art Date:</label>
+            <input type="Date" class="col-10 form-control" placeholder="Enter Art Date" id="art_date" name="art_date" />
+        </div>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" name="art_image" id="art_image" required>
+            <label class="custom-file-label">Art</label>
+        </div>
+        <br /><br />
+        <div class="form-group h-auto w-auto">
+            <button type="submit" class="btn btn-primary" value="Add Album" />Add Art</button>
+        </div>
+    </form>
+{% endblock %}
