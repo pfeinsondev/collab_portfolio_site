@@ -45,7 +45,6 @@ class Admin_Manager(models.Manager):
         return model_status
 
     def login(self, post_data):
-        all_users = self.filter()
         # Check if user is in db
         admin = self.filter(username=post_data['username'])
         models_response = {}

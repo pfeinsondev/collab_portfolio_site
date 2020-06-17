@@ -1,0 +1,19 @@
+{% extends 'admin_base.html' %}
+
+{% block main-content %}
+    {% if not request.session.status %}
+        {% for error in request.session.errors %}
+            {{error}}
+        {% endfor %}
+    {% endif %}
+    <form action="process_override_authentication" method="post" >
+        {% csrf_token %}
+        <div class="form-group-row">
+            <label for="force_code" class="col-2 col-form-label">Forced Access Code:</label>
+            <input class="form-control" type="text" name="force_code" />
+        </div>
+        <div class="form-group-row">
+            <button class="btn btn-primary" type="submit" value="login" >Override Authentication</button>
+        </div>
+    </form>
+{% endblock %}

@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect
 from ..Admin_Manager.models import Admin
 from ..Front_End.models import AboutInformation
 
+#-----------------------------------------------------------------------------#
+#----------                         Admin Pages                     ----------#
+#-----------------------------------------------------------------------------#
+
 #--------------------------#
 #--- Admin Landing Page ---#
 #--------------------------#
@@ -27,10 +31,14 @@ def admin_login(request):
 def authenticate_admin(request):
     response_from_models = Admin.admins.login(request.POST)
     if response_from_models['status']:
+        request.session['status'] = True
         request.session['logged_in'] = True
         return render(request, 'admin_index.html')
     else:
-        return not_authenticated(request)
+        request.session['status'] = False
+        request.session['logged_in'] = False
+        request.session['errors'] = response_from_models['errors']
+        return admin_login(request)
 
 
 #-------------------------------#
@@ -38,6 +46,7 @@ def authenticate_admin(request):
 #-------------------------------#
     
 def collect_new_admin_data(request):
+    # Override Code "override_admin_registration_lock"
     if ('logged_in' in request.session):
         if (request.session['logged_in']):
             return render(request, 'register.html')
@@ -69,6 +78,29 @@ def registration_success(request):
 
 def reset_password_request(request):
     return
+
+#--------------------------------------------------------#
+#----- First time registration / Forced access code -----#
+#--------------------------------------------------------#
+
+def override_authentication(request):
+    request.session['errors'] = ""
+    return render(request, 'override_authentication.html')
+
+def process_override_request(request):
+    if (request.POST['force_code'] == "override_admin_registration_lock"):
+        request.session['status'] = True
+        request.session['logged_in'] = True
+        return collect_new_admin_data(request)
+    else:
+        request.session['status'] = False
+        request.session['errors'] = "Invalid override authentication code, try again"
+        return render(request, 'override_authentication.html')
+    
+#------------------------------------------------------------------------------#
+#----------                         About Me Pages                  -----------#
+#------------------------------------------------------------------------------#
+
 #----------------------------------------#
 #--- Get Current About Me Information ---#
 #----------------------------------------#
