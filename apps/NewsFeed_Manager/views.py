@@ -48,10 +48,11 @@ def select_post_to_delete(request):
             response_from_models = NewsFeed.newsfeed_manager.get_all_entries()
             if response_from_models['status']:
                 request.session['status'] = True
-                request.session['entries_list_json']
+                request.session['entries_list_json'] = response_from_models['entries_list_json']
             else:
                 request.session['status'] = False
                 request.session['errors'] = "No Posts Found!"
+                request.session['entries_list_json'] = []
             return render(request, 'select_post_to_delete.html')
         else:
             return not_authenticated(request)
@@ -64,7 +65,11 @@ def delete_post(request):
     response_from_models = NewsFeed.newsfeed_manager.delete_entry(request.POST)
     if response_from_models['status']:
         request.session['status'] = True
-        return get_all_newsfeed_entries(request)
+        data = request.POST.copy()
+        if (data.get('delete_multiple')):
+            return select_post_to_delete(request)
+        else:
+            return get_all_newsfeed_entries(request)
     else:
         request.session['status'] = False
         request.session['errors'] = response_from_models['errors']

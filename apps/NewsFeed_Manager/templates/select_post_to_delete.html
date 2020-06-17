@@ -8,20 +8,27 @@
                 {{ error }}
             {% endfor %}
         {% endif %}
+        {% if request.session.entries_list_json %}
         <form action="delete_post" method="post"">
             {% csrf_token %}
-            {% if request.session.entries_list_json %}
             <div class="form-group">
-                    <label for="target_entry_id" class="w-auto col-select-label">Select Post:</label>
-                    <select class="form-control" id='target_entry_id' name='target_entry_id'>
-                    {% for entry in request.session.entries_list_json %}
-                            <option value="{{entry.post_id}}">{{entry.post_id}} &nbsp;&nbsp;&nbsp;&nbsp; {{entry.post_content}}</option>
-                        {% endfor %}
-                    </select>
+                <label for="target_entry_id" class="w-auto col-select-label">Select Post:</label>
+                <select class="form-control" id='target_entry_id' name='target_entry_id'>
+                {% for entry in request.session.entries_list_json %}
+                        <option value="{{entry.post_id}}">{{entry.post_id}} &nbsp;&nbsp;&nbsp;&nbsp; {{entry.post_content}}</option>
+                    {% endfor %}
+                </select>
             </div>
-            {% endif %}
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="delete_multiple" name="delete_multiple" ="" >
+                <label for="delete_multiple" class="form-check-label">Delete More?</label>
+            </div><br /><br />
+            
             <div class="form-group">
                 <button class="btn btn-primary" type="submit" value="Delete" >Delete Post</button>
             </div>
         </form>
+        {% else %}
+        <a href="{% url 'collect_new_entry_data' %}">Add A Post</a>
+        {% endif %}
 {% endblock %}
