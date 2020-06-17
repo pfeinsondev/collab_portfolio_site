@@ -79,9 +79,9 @@ def registration_success(request):
 def reset_password_request(request):
     return
 
-#--------------------------------------------------------#
-#----- First time registration / Forced access code -----#
-#--------------------------------------------------------#
+#----------------------------------------------------#
+#--- First time registration / Forced access code ---#
+#----------------------------------------------------#
 
 def override_authentication(request):
     request.session['errors'] = ""
@@ -96,6 +96,17 @@ def process_override_request(request):
         request.session['status'] = False
         request.session['errors'] = "Invalid override authentication code, try again"
         return render(request, 'override_authentication.html')
+    
+    
+#---------------#
+#--- Log out ---#
+#---------------#
+
+def log_out(request):
+    request.session['logged_in'] = False
+    request.session['status'] = False
+    request.session['errors'] = "Successfully logged out!"
+    return render(request, 'login.html')
     
 #------------------------------------------------------------------------------#
 #----------                         About Me Pages                  -----------#
