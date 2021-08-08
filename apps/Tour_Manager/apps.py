@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class TourManagerConfig(AppConfig):
-    name = 'Tour_Manager'
+    name = "apps.Tour_Manager"

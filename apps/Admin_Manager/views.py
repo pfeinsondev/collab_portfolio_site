@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from ..Admin_Manager.models import Admin
+from .models import Admin
 from ..Front_End.models import AboutInformation
 
 #-----------------------------------------------------------------------------#

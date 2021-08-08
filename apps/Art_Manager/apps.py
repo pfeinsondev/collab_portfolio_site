@@ -5,4 +5,4 @@ from django.apps import AppConfig
 
 
 class ArtManagerConfig(AppConfig):
-    name = 'Art_Manager'
+    name = 'apps.Art_Manager'
